@@ -7,11 +7,12 @@ trigger:
 - master
 
 jobs:
-- parameters:
-    python_type: 'Python'
+
+- job: 'Test'
+  variables:
+  - python_type: 'Python'
     ython.version: '3.7'
     os_name: 'Windows'
-- job: 'Test'
   pool:
     vmImage: 'vs2017-win2016'
   strategy:
