@@ -9,6 +9,10 @@ trigger:
 jobs:
 
 - job: 'Test'
+  parameters:
+    python_type: 'Python'
+    ython.version: '3.7'
+    os_name: 'Windows'
   pool:
     vmImage: 'vs2017-win2016'
   strategy:
@@ -34,3 +38,6 @@ jobs:
       searchFolder: 'D:\a\1\s\'
       condition: succeededOrFailed()
       displayName: 'Publish Test Results outputxunit.xml'
+      testResultsTitle: Automated Test for $(os_name) with Python $(python_version)
+      testRunTitle: $(python_type)-$(python_version)-$(os_name)-Automated Test
+      
