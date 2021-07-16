@@ -7,9 +7,9 @@ trigger:
 - master
   
 variables:
-- lang_type: 'Python'
-  lang_version: '3.7'
-  os_name: 'Windows'
+  LANG: 'Python'
+  VERSION: '3.7'
+  OS: 'Windows'
   
 jobs:
 
@@ -40,6 +40,6 @@ jobs:
       searchFolder: 'D:\a\1\s\'
       condition: succeededOrFailed()
       displayName: 'Publish Test Results outputxunit.xml'
-      testResultsTitle: Automated Test for $(os_name) with Python $(lang_version)
-      testRunTitle: $(lang_type)-$(lang_version)-$(os_name)-Automated Test
+      testResultsTitle: Automated Test for $(os_name) with Python $(VERSION)
+      testRunTitle: $(LANG)-$(VERSION)-$(OS)-Automated Test
       
