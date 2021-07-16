@@ -6,7 +6,7 @@
 trigger:
 - master
   
- variables:
+variables:
 - name: python_type
   value: 'Python'
   name: python.version
