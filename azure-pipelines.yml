@@ -10,9 +10,12 @@ jobs:
 
 - job: 'Test'
   variables:
-  - python_type: 'Python'
-    ython.version: '3.7'
-    os_name: 'Windows'
+  - name: python_type
+    value: 'Python'
+    name: python.version
+    value: : '3.7'
+    name: os_name
+    value: 'Windows'
   pool:
     vmImage: 'vs2017-win2016'
   strategy:
