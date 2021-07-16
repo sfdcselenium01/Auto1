@@ -11,7 +11,7 @@ variables:
   VERSION: '3.7'
   OS: 'Windows'
   WORKFOLDER: 'D:\a\1\s\'
-  BROWSERPATH: 'D:/a/1/s/node_modules/chromedriver/lib/chromedriver/chromedriver.exe'
+  BROWSERPATH: 'D:\a\1\s\node_modules\chromedriver\lib\chromedriver\chromedriver.exe'
   
 jobs:
 
@@ -34,7 +34,7 @@ jobs:
   - script: pip install --upgrade robotframework robotframework-seleniumlibrary && npm install chromedriver
     displayName: 'Install dependencies'
   
-  - powershell: robot --pythonpath . --variable BROWSERPATH:$(BROWSERPATH) -x outputxunit.xml TestCases.robot
+  - powershell: robot --pythonpath . --variable BROWSERPATH:'$(BROWSERPATH)' -x outputxunit.xml TestCases.robot
     displayName: 'Run Robot Scripts'
   - task: PublishTestResults@2
     inputs:
