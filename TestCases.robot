@@ -4,8 +4,13 @@ Suite Setup       Open URL Locally
 Suite Teardown    Close Browser
 Library           SeleniumLibrary
 Library           String
-Library           helpers.py
 Library           Collections
+Resource          Keywords.robot
+
+*** Variables ***
+${BROWSERPATH}    ${EMPTY}
+${LoginURL}       https://www.autohero.com/
+${BROWSER}        Chrome
 
 *** Test Cases ***
 TC1 - Check Filters on Advanced Searh Page
@@ -28,7 +33,8 @@ Open Tests in Souce Labs
 
 Open URL Locally
     #Open Webdriver hosted on Azure Devops
-    Create Webdriver    Chrome    executable_path=D:/a/1/s/node_modules/chromedriver/lib/chromedriver/chromedriver.exe
+    Open Browser To URL    ${LoginURL}    ${BROWSER}    ${BROWSERPATH}
+    Comment    Create Webdriver    Chrome    executable_path=D:/a/1/s/node_modules/chromedriver/lib/chromedriver/chromedriver.exe
     # Open Browser on Local Machine
     # Open Browser    https://www.autohero.com/de/search/    chrome
     Maximize Browser Window
@@ -57,14 +63,14 @@ Verify all cars are filtered by first registration
     @{locators}    Get Webelements    //*[contains(@class,'specItem___')][1]
     @{result}=    Create List
     FOR    ${locator}    IN    @{locators}
-        ${name}=    Get Text    ${locator}
-        ${matches}=    Get Regexp Matches    ${name}    \\d{4}
-        Append To List    ${result}    ${matches}
+    ${name}=    Get Text    ${locator}
+    ${matches}=    Get Regexp Matches    ${name}    \\d{4}
+    Append To List    ${result}    ${matches}
     ${flat}    Evaluate    [item for sublist in ${result} for item in (sublist if isinstance(sublist, list) else [sublist])]
     ${numbs}=    Convert To Integer    2014
     FOR    ${locator}    IN    @{flat}
-        Log    ${locator}
-        Run Keyword Unless    ${locator} >= ${numbs}    Pass
+    Log    ${locator}
+    Run Keyword Unless    ${locator} >= ${numbs}    Pass
 
 User Select Filter for Price Decsending
     Wait Until Element Is Visible    //select[contains(@name,'sort')]
@@ -79,9 +85,9 @@ Verify all Cars are Filtered By Price Descending
     ${priceAll}=    Create List
     ${sortedList}=    Create List
     FOR    ${locator}    IN    @{locators}
-        ${name}=    Get Text    ${locator}
-        ${matches}=    Get Regexp Matches    ${name}    \^.....
-        Append To List    ${priceAll}    ${matches}
+    ${name}=    Get Text    ${locator}
+    ${matches}=    Get Regexp Matches    ${name}    \^.....
+    Append To List    ${priceAll}    ${matches}
     ${flat}    Evaluate    [item for sublist in ${priceAll} for item in (sublist if isinstance(sublist, list) else [sublist])]
     ${sortPrices}=    Sorted List    ${flat}
     Should Be Equal as Strings    ${sortPrices}    True
