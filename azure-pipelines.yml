@@ -44,9 +44,5 @@ jobs:
       displayName: 'Publish Test Results outputxunit.xml'
       testResultsTitle: Automated Test for $(os_name) with Python $(VERSION)
       testRunTitle: $(LANG)-$(VERSION)-$(OS)-Automated Test
-  - task: publishhtmlreport@1
-    inputs:
-      htmlType: 'genericHTML'
-      htmlPath: '$(Build.SourcesDirectory)/log.html'
 
       
