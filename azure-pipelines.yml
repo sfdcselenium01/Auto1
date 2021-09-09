@@ -36,15 +36,7 @@ jobs:
   
   - powershell: robot --pythonpath . --variable BROWSERPATH:'$(BROWSERPATH)' -x outputxunit.xml TestCases.robot -l log.html
     displayName: 'Run Robot Scripts'
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFiles: outputxunit.xml
-      searchFolder: '$(WORKFOLDER)'
-      condition: succeededOrFailed()
-      displayName: 'Publish Test Results outputxunit.xml'
-      testResultsTitle: Automated Test for $(os_name) with Python $(VERSION)
-      testRunTitle: $(LANG)-$(VERSION)-$(OS)-Automated Test
-    task: PublishBuildArtifacts@1
+  - task: PublishBuildArtifacts@1
     inputs:
       pathToPublish: '$(WORKFOLDER)'
       artifactName: HtmlReport
