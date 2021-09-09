@@ -36,8 +36,9 @@ jobs:
   
   - powershell: robot --pythonpath . --variable BROWSERPATH:'$(BROWSERPATH)' -x outputxunit.xml TestCases.robot -l log.html
     displayName: 'Run Robot Scripts'
-  - task: PublishBuildArtifacts@1
+  - task: publishhtmlreport@1
     inputs:
-      pathToPublish: '$(WORKFOLDER)'
-      artifactName: HtmlReport
+      htmlType: 'genericHTML'
+      htmlPath: '$(Build.SourcesDirectory)/log.html'
+
       
