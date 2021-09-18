@@ -32,7 +32,7 @@ Open Browser To URL
     ${chrome_options} =    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
     Call Method    ${chrome_options}    add_argument    --disable-infobars
     Call Method    ${chrome_options}    add_argument    --disable-extensions
-    Create Webdriver    Chrome    chrome_options=${chrome_options}    executable_path=/opt/hostedtoolcache/Python/3.7.10/x64/bin/chromedriver
+    Create Webdriver    Chrome    chrome_options=${chrome_options}    executable_path=${localBrowser}
     Go To    ${testURL}
     ELSE IF    '${testBrowser.upper()}'=='FIREFOX'
     Open Browser    ${testURL}    browser=firefox    executable_path=${localBrowser}
