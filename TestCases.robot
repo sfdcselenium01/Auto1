@@ -8,7 +8,7 @@ Library           Collections
 Resource          Keywords.robot
 
 *** Variables ***
-${BROWSERPATH}    ${EMPTY}
+${BROWSERPATH}    /opt/hostedtoolcache/Python/3.7.10/x64/bin/chromedriver
 ${LoginURL}       https://www.autohero.com/
 ${BROWSER}        Chrome
 
