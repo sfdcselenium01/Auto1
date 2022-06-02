@@ -8,7 +8,7 @@ Library           Collections
 Library           OperatingSystem
 
 *** Variables ***
-${SYSTEM_DEFAULTWORKINGDIRECTORY}    ${EMPTY}
+${SYSTEM_DEFAULTWORKINGDIRECTORY}    C:\\Temp
 
 *** Test Cases ***
 Selenium Home Page
