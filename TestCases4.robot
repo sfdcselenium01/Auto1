@@ -18,7 +18,7 @@ Selenium Home Page
     Set Window Size    1920    1080
     Log    ${SYSTEM_DEFAULTWORKINGDIRECTORY}
     ${exist?}    Run Keyword And Return Status    Directory Should Exist    ${SYSTEM_DEFAULTWORKINGDIRECTORY}\\Screenshot
-    Run Keyword If    '${exist?}'!='True'    Create Dictionary    ${SYSTEM_DEFAULTWORKINGDIRECTORY}\\Screenshot
+    Run Keyword If    '${exist?}'!='True'    OperatingSystem.Create Directory    ${SYSTEM_DEFAULTWORKINGDIRECTORY}\\Screenshot
     Set Screenshot Directory    ${SYSTEM_DEFAULTWORKINGDIRECTORY}\\Screenshot
     Go To    https://www.selenium.dev/
     Maximize Browser Window
