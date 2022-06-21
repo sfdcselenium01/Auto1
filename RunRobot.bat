@@ -1,0 +1,1 @@
+robot -x outputxunit.xml %BUILD_SOURCESDIRECTORY%\TestCases5.robot
