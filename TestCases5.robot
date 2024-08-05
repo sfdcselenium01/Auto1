@@ -15,7 +15,7 @@ ${BUILD_SOURCESDIRECTORY}    ${EMPTY}
 Selenium Home Page
     ${chrome_options}    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys
     Call Method    ${chrome_options}    add_argument    --disable-extensions
-    Create Webdriver    driver_name=Chrome    chrome_options=${chrome_options}
+    Create Webdriver    driver_name=Chrome    options=${chrome_options}
     Go To    https://www.selenium.dev/
     Maximize Browser Window
     Sleep    3
