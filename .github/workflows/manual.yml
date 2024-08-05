@@ -1,0 +1,99 @@
+name: $(date:yyyyMMdd)$(rev:.r)
+jobs:
+- job: Phase_1
+  displayName: Build and Test
+  pool:
+    name: Azure Pipelines
+  steps:
+  - checkout: self
+    clean: true
+    fetchTags: true
+  - task: UsePythonVersion@0
+    displayName: Use Python 3.10
+    inputs:
+      versionSpec: 3.10
+  - task: CmdLine@2
+    displayName: Install dependencies
+    inputs:
+      script: python -m pip install --upgrade pip
+  - task: CmdLine@2
+    displayName: Install Chrome Driver Using npm
+    inputs:
+      script: >
+        npm install --save chrome-version
+  - task: CmdLine@2
+    displayName: Install Robot Framework
+    inputs:
+      script: >
+        pip install --upgrade robotframework
+  - task: CmdLine@2
+    displayName: Install Selenium Library
+    inputs:
+      script: pip install --upgrade robotframework-seleniumlibrary
+  - task: ms-autotest.screen-resolution-utility-task.screen-resolution-utlity-task.ScreenResolutionUtility@1
+    displayName: Set Screen Resolution
+    condition: succeededOrFailed()
+    inputs:
+      displaySettings: specific
+      width: 1920
+      height: 1080
+  - task: PowerShell@2
+    displayName: PowerShell Script
+    enabled: False
+    inputs:
+      targetType: inline
+      script: >
+        Set-DisplayResolution -Width 1920 -Height 1080 -Force
+  - task: CmdLine@2
+    displayName: Clean Screenshot Folder
+    enabled: False
+    inputs:
+      script: if not exist $(System.DefaultWorkingDirectory)\Screenshot mkdir $(System.DefaultWorkingDirectory)\Screenshot else DEL $(System.DefaultWorkingDirectory)\Screenshot\*.png
+  - task: DeleteFiles@1
+    displayName: Delete files from  $(System.DefaultWorkingDirectory)
+    inputs:
+      SourceFolder: ' $(System.DefaultWorkingDirectory)'
+      Contents: >-
+        *.png
+
+        Screenshot\*.png
+  - task: CmdLine@2
+    displayName: Run Robot Framework Tests
+    inputs:
+      script: robot -x outputxunit.xml TestCases5.robot
+  - task: PublishTestResults@2
+    displayName: Publish Test Results **/outputxunit.xml
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFiles: '**/outputxunit.xml'
+  - task: PublishPipelineArtifact@1
+    displayName: Publish Pipeline Artifact -Screenshot
+    condition: succeededOrFailed()
+    enabled: False
+    inputs:
+      path: $(System.DefaultWorkingDirectory)\selenium-screenshot-1.png
+      artifactName: Screenshot
+  - task: PublishPipelineArtifact@1
+    displayName: Publish Pipeline Artifact - Log
+    condition: succeededOrFailed()
+    inputs:
+      path: $(System.DefaultWorkingDirectory)\log.html
+      artifactName: Log
+  - task: CmdLine@2
+    displayName: Copy Screenshot
+    enabled: False
+    inputs:
+      script: >
+        COPY $(System.DefaultWorkingDirectory)\*.png $(System.DefaultWorkingDirectory)\Screenshot
+  - task: CopyFiles@2
+    displayName: 'Copy Files to:  $(System.DefaultWorkingDirectory)\Screenshot'
+    inputs:
+      SourceFolder: ' $(System.DefaultWorkingDirectory)'
+      Contents: '*.png'
+      TargetFolder: ' $(System.DefaultWorkingDirectory)\Screenshot'
+  - task: PublishPipelineArtifact@1
+    displayName: Publish Pipeline Artifact - All Screenshots
+    condition: succeededOrFailed()
+    inputs:
+      path: $(System.DefaultWorkingDirectory)\Screenshot
+      artifactName: All Screenshots
