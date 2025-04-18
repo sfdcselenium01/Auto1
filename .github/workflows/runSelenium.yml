@@ -31,7 +31,7 @@ jobs:
       - name: Rerun testing if failed
         if: failure()
         run: |
-          zip -r old_output.zip *.png *.log *.xml
+          7z a -tzip old_output.zip *.png *.log *.xml
           find output/ -name "*.png" -delete
           find output/ -name "*.html" -delete
           find output/ -name "*.xml" -delete
