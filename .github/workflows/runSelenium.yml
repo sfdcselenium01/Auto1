@@ -32,9 +32,9 @@ jobs:
         if: failure()
         run: |
           7z a -tzip old_output.zip *.png *.html
-          find output/ -name "*.png" -delete
-          find output/ -name "*.html" -delete
-          find output/ -name "*.xml" -delete
+          find -name "*.png" -delete
+          find -name "*.html" -delete
+          find -name "*.xml" -delete
           robot  -x outputxunit.xml Selenium.robot
       - name: Publish test results
         if: always()
