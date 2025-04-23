@@ -53,14 +53,6 @@ jobs:
             **/*.html
             **/*.zip
             **/*.xml
-
-  generate_report:
-    if: always()
-    needs: [robot-tests-windows] 
-    runs-on: windows-latest
-
-    steps:
-      - uses: actions/checkout@v2
       - name: Download reports
         uses: actions/download-artifact@v1
         with:
@@ -69,3 +61,4 @@ jobs:
         uses: joonvena/robotframework-reporter-action@v2.5
         with:
           gh_access_token: ${{ secrets.GITHUB_TOKEN }}
+          summary: true
