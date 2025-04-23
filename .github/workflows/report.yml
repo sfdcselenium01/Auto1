@@ -53,10 +53,7 @@ jobs:
             **/*.html
             **/*.zip
             **/*.xml
-      - name: Download reports
-        uses: actions/download-artifact@v1
-        with:
-          name: reports
+
       - name: Send report to commit
         uses: joonvena/robotframework-reporter-action@v2.5
         with:
