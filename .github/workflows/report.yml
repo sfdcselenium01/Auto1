@@ -59,9 +59,9 @@ jobs:
         uses: actions/github-script@v7.0.0
         with:
         script: |-
-          const reportUrl = `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts`;
-          const summary = `
+          const reportUrl = '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts';
+          const summary = '
           ## Robot Framework Test Report
           - [Download Report Artifacts](${reportUrl})
-          `;
+          ';
           core.summary.addRaw(summary).write();
