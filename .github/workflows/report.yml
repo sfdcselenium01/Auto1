@@ -54,8 +54,14 @@ jobs:
             **/*.zip
             **/*.xml
 
-      - name: Send report to commit
-        uses: joonvena/robotframework-reporter-action@v2.5
+      - name: Add Robot Framework Report to Workflow Summary
+        if: always() # Ensure this step runs regardless of test success or failure
+        uses: actions/github-script@v7.0.0
         with:
-          gh_access_token: ${{ secrets.GITHUB_TOKEN }}
-          summary: true
+        script: |-
+          const reportUrl = `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts`;
+          const summary = `
+          ## Robot Framework Test Report
+          - [Download Report Artifacts](${reportUrl})
+          `;
+          core.summary.addRaw(summary).write();
