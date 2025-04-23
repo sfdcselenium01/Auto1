@@ -43,6 +43,13 @@ jobs:
         with:
           comment_title: FOS UI Test ${{ github.run_id }}
           junit_files: outputxunit.xml
+      - name: Add test summary to GitHub Actions summary
+        run: |
+          echo "### 🧪 Robot Framework Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Total tests:** $(grep -oP '(?<=total=")\d+' output.xml)" >> $GITHUB_STEP_SUMMARY
+          echo "**Passed:** $(grep -oP '(?<=passed=")\d+' output.xml)" >> $GITHUB_STEP_SUMMARY
+          echo "**Failed:** $(grep -oP '(?<=failed=")\d+' output.xml)" >> $GITHUB_STEP_SUMMARY
       - name: 'Publish Artifact: Testing Outputs'
         if: success() || failure()
         uses: actions/upload-artifact@v4.1.0
@@ -54,10 +61,3 @@ jobs:
             **/*.zip
             **/*.xml
 
-      - name: Add test summary to GitHub Actions summary
-        run: |
-          echo "### 🧪 Robot Framework Test Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Total tests:** $(grep -oP '(?<=total=")\d+' output.xml)" >> $GITHUB_STEP_SUMMARY
-          echo "**Passed:** $(grep -oP '(?<=passed=")\d+' output.xml)" >> $GITHUB_STEP_SUMMARY
-          echo "**Failed:** $(grep -oP '(?<=failed=")\d+' output.xml)" >> $GITHUB_STEP_SUMMARY
