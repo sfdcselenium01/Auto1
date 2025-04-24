@@ -1,4 +1,4 @@
-name: Rebot Framework Report
+name: Use Rebot Report
 
 on:
   #push:
@@ -28,9 +28,9 @@ jobs:
 
       - name: Run Robot Framework tests
         run: |
-          robot  -x outputxunit.xml Selenium.robot
+          robot --outputdir output Selenium.robot
 
-      - name: Send report to commit
-        uses: joonvena/robotframework-reporter-action@v2.5
+      - name: Publish report
+        uses: jonathanpaulias/robot-reporter@v1
         with:
-          gh_access_token: ${{ secrets.GITHUB_TOKEN }}
+          output_dir: output
