@@ -1,3 +1,12 @@
+name: Use Rebot Framework Report
+
+on:
+  #push:
+  #  branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
 jobs:
   test:
     runs-on: ubuntu-latest
