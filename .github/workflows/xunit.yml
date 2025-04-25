@@ -32,7 +32,7 @@ jobs:
 
       - name: Test Report
         uses: dorny/test-reporter@v2
-        if: success() || failure()    # run this step even if previous step failed
+        if: always()    # run this step even if previous step failed
         with:
           name: xUnitTests            # Name of the check run which will be created
           path: resultx*.xml    # Path to test results
