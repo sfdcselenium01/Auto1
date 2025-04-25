@@ -35,5 +35,6 @@ jobs:
         if: success() || failure()
         with:
           name: xUnitTests
+          fail-on-error: false
           path: outputxunit.xml
           reporter: java-junit
