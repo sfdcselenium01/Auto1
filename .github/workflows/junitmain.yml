@@ -37,4 +37,4 @@ jobs:
           name: xUnitTests
           fail-on-error: false
           path: outputxunit.xml
-          reporter: java-junit
+          reporter: swift-xunit
