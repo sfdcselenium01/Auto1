@@ -1,0 +1,39 @@
+name: XUnit reporter
+
+on:
+  #push:
+  #  branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  robot-tests-windows:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install robotframework==6.0.2
+          pip install robotframework-seleniumlibrary
+
+      - name: Run Robot Framework tests
+        run: |
+          robot resultxunit.xml Selenium.robot
+
+      - name: Test Report
+        uses: dorny/test-reporter@v2
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: JEST Tests            # Name of the check run which will be created
+          path: resultx*.xml    # Path to test results
+          reporter: dotnet-trx        # Format of test results
