@@ -28,7 +28,7 @@ jobs:
 
       - name: Run Robot Framework tests
         run: |
-          robot resultxunit.xml Selenium.robot
+          robot -x resultxunit.xml Selenium.robot
 
       - name: Test Report
         uses: EnricoMi/publish-unit-test-result-action/windows@v2
