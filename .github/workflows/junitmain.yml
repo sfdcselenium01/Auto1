@@ -31,8 +31,8 @@ jobs:
           robot  -x outputxunit.xml Selenium.robot
       - name: Test Report
         uses: dorny/test-reporter@v2
-        if: always()    # run this step even if previous step failed
+        if: success() || failure()
         with:
-          name: xUnitTests            # Name of the check run which will be created
-          path: outputxunit.xml    # Path to test results
-          reporter: java-junit        # Format of test results
+          name: xUnitTests
+          path: outputxunit.xml
+          reporter: java-junit
