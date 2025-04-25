@@ -8,7 +8,8 @@ on:
     branches: [ master ]
 
 jobs:
-  robot-tests-windows:
+  Phase_1:
+    name: Build and Test
     runs-on: windows-latest
 
     steps:
