@@ -30,7 +30,7 @@ jobs:
         run: |
           robot  -x outputxunit.xml Selenium.robot
       - name: Rerun testing if failed
-        if: ${{ failure() && steps.'Run Robot Framework tests'.conclusion == 'failure' }}
+        if: ${{ failure() && steps.Run Robot Framework tests.conclusion == 'failure' }}
         run: |
           7z a -tzip old_output.zip *.png *.html
           del *.png
