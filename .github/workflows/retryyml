@@ -1,4 +1,4 @@
-name: Run Robot Framework and Selenium
+name: Retry if failed
 
 on:
   workflow_dispatch:
