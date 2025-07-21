@@ -1,0 +1,62 @@
+name: Use JUnit report
+
+on:
+  #push:
+  #  branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  robot-tests-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install robotframework
+          pip install robotframework-seleniumlibrary
+
+      - name: Run Robot Framework tests
+        run: |
+          robot  -x outputxunit.xml Selenium.robot
+      - name: Convert xUnit report to JUnit report
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }} \
+            gabrielweyer/xunit-to-junit \
+            -input outputxunit.xml \
+            -output outputjunit.xml
+      - name: Publish test results
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action/windows@v2
+        with:
+          comment_title: FOS UI Test ${{ github.run_id }}
+          files: outputjunit.xml
+      - name: Add test summary to GitHub Actions summary
+        run: |
+          echo "### Robot Framework Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Total tests:** $(grep -oP '(?<=total=")\d+' outputxunit.xml)" >> $GITHUB_STEP_SUMMARY
+          echo "**Passed:** $(grep -oP '(?<=passed=")\d+' outputxunit.xml)" >> $GITHUB_STEP_SUMMARY
+          echo "**Failed:** $(grep -oP '(?<=failed=")\d+' outputxunit.xml)" >> $GITHUB_STEP_SUMMARY
+      - name: 'Publish Artifact: Testing Outputs'
+        if: success() || failure()
+        uses: actions/upload-artifact@v4.1.0
+        with:
+          name: Testing Outputs
+          path: |
+            *.png
+            *.html
+            *.zip
+            *.xml
+
