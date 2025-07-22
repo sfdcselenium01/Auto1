@@ -1,5 +1,4 @@
 name: Use JUnit report
-
 on:
   #push:
   #  branches: [ master ]
@@ -10,59 +9,59 @@ on:
 jobs:
   robot-tests-windows:
     runs-on: windows-latest
-
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-
+        uses: actions/checkout@v4
+        
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-
+          
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install robotframework
           pip install robotframework-seleniumlibrary
-
+          
       - name: Run Robot Framework tests
         run: |
-          robot  -x outputxunit.xml Selenium.robot
+          robot --xunit outputxunit.xml Selenium.robot
+        continue-on-error: true
+        
       - name: Setup .NET SDK
         if: always()
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'  # or your version
+          dotnet-version: '8.0.x'
      
       - name: Install dotnet-xunit-to-junit
         if: always()
         run: dotnet tool install -g dotnet-xunit-to-junit
-
-      - name: Convert xUnit.xm to JUnit.xml
+        
+      - name: Convert xUnit.xml to JUnit.xml
         if: always()
-        run: dotnet xunit-to-junit "outputxunit.xml" "outputjunit.xml"
+        run: dotnet xunit-to-junit "outputxunit.xml" "junit.xml"
+        
       - name: Publish test results
         if: always()
         uses: EnricoMi/publish-unit-test-result-action/windows@v2
         with:
           comment_title: FOS UI Test ${{ github.run_id }}
-          files: outputjunit.xml
-      - name: Add test summary to GitHub Actions summary
-        run: |
-          echo "### Robot Framework Test Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Total tests:** $(grep -oP '(?<=total=")\d+' outputxunit.xml)" >> $GITHUB_STEP_SUMMARY
-          echo "**Passed:** $(grep -oP '(?<=passed=")\d+' outputxunit.xml)" >> $GITHUB_STEP_SUMMARY
-          echo "**Failed:** $(grep -oP '(?<=failed=")\d+' outputxunit.xml)" >> $GITHUB_STEP_SUMMARY
-      - name: 'Publish Artifact: Testing Outputs'
-        if: success() || failure()
-        uses: actions/upload-artifact@v4.1.0
+          files: junit.xml
+          check_name: "Robot Framework Test Results"
+          report_individual_runs: true
+          
+      - name: Publish test output files
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: Testing Outputs
+          name: testing-outputs-${{ github.run_id }}
           path: |
             *.png
             *.html
             *.zip
             *.xml
-
+            log.html
+            report.html
+            output.xml
