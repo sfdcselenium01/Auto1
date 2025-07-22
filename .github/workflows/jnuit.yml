@@ -29,13 +29,16 @@ jobs:
       - name: Run Robot Framework tests
         run: |
           robot  -x outputxunit.xml Selenium.robot
-      - name: Convert xUnit report to JUnit report
-        run: |
-          docker run --rm \
-            -v ${{ github.workspace }} \
-            gabrielweyer/xunit-to-junit \
-            -input outputxunit.xml \
-            -output outputjunit.xml
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'  # or your version
+     
+      - name: Install dotnet-xunit-to-junit
+        run: dotnet tool install -g dotnet-xunit-to-junit
+
+      - name: Convert xUnit.xm to JUnit.xml
+        run: dotnet xunit-to-junit "outputxunit.xml" "outputjunit.xml"
       - name: Publish test results
         if: always()
         uses: EnricoMi/publish-unit-test-result-action/windows@v2
