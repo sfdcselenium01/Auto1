@@ -30,11 +30,13 @@ jobs:
         run: |
           robot  -x outputxunit.xml Selenium.robot
       - name: Setup .NET SDK
+        if: always()
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'  # or your version
      
       - name: Install dotnet-xunit-to-junit
+        if: always()
         run: dotnet tool install -g dotnet-xunit-to-junit
 
       - name: Convert xUnit.xm to JUnit.xml
