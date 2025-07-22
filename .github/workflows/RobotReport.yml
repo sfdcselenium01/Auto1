@@ -1,4 +1,4 @@
-name: Use JUnit report
+name: Support Robot Report
 
 on:
   #push:
