@@ -40,6 +40,7 @@ jobs:
         run: dotnet tool install -g dotnet-xunit-to-junit
 
       - name: Convert xUnit.xm to JUnit.xml
+        if: always()
         run: dotnet xunit-to-junit "outputxunit.xml" "outputjunit.xml"
       - name: Publish test results
         if: always()
