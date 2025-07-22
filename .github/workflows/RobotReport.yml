@@ -1,4 +1,4 @@
-name: Support Robot Framework Report
+name: Use JUnit report
 
 on:
   #push:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   robot-tests-windows:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
