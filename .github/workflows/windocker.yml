@@ -7,19 +7,15 @@ on:
 
 
 jobs:
-  container-ops:
+  windows-docker:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       
-      - name: Run Windows Container
+      - name: Check Docker info
+        run: docker info
+        
+      - name: Run Windows containers (native)
         run: |
-          docker run --rm mcr.microsoft.com/windows/servercore:ltsc2022 cmd /c echo "Hello from Windows container"
-      
-      - name: Switch to Linux containers (if needed)
-        run: |
-          & "C:\Program Files\Docker\Docker\DockerCli.exe" -SwitchLinuxEngine
-      
-      - name: Run Linux Container
-        run: |
-          docker run --rm ubuntu:latest echo "Hello from Linux container"
+          docker run --rm mcr.microsoft.com/windows/nanoserver:ltsc2022 cmd /c echo "Windows container"
+          docker run --rm mcr.microsoft.com/windows/servercore:ltsc2022 powershell -c "Write-Host 'PowerShell in container'"
