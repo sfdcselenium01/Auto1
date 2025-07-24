@@ -1,0 +1,25 @@
+name: Windwon Container Operations
+on:
+  #  branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+
+jobs:
+  container-ops:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run Windows Container
+        run: |
+          docker run --rm mcr.microsoft.com/windows/servercore:ltsc2022 cmd /c echo "Hello from Windows container"
+      
+      - name: Switch to Linux containers (if needed)
+        run: |
+          & "C:\Program Files\Docker\Docker\DockerCli.exe" -SwitchLinuxEngine
+      
+      - name: Run Linux Container
+        run: |
+          docker run --rm ubuntu:latest echo "Hello from Linux container"
